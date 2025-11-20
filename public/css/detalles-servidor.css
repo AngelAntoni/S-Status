@@ -1,0 +1,39 @@
+/* Fondo de la celda Acciones según tema */
+html[data-theme="light"] td.acciones-cell {
+  background-color: #ffffff !important;
+  border-color: #dee2e6 !important;
+}
+html[data-theme="dark"] td.acciones-cell {
+  background-color: #1D1D1D !important;
+  border-color: #333 !important;
+}
+
+/* El contenedor de botones no debe tener fondo propio */
+td.acciones-cell > .acciones-wrap {
+  width: fit-content;
+  margin: 0 auto;
+  background: transparent;
+}
+
+/* Chips de estado del Error */
+.status-pill {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-weight: 500;
+  color: #fff;
+}
+.status-error {
+  background-color: #C0392B;
+}
+.status-success {
+  background-color: #2E7D32;
+}
+
+/* Ocultar columna Acciones al imprimir */
+@media print {
+  th.col-acciones,
+  td.acciones-cell {
+    display: none !important;
+  }
+}

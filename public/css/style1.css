@@ -1,0 +1,172 @@
+/* Reset y control de overscroll*/
+html, body {
+    height: 100%;
+    margin: 0;
+    overscroll-behavior-y: none; 
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    /*overflow-y: hidden;*//*Esto quita el Scroll*/
+}
+
+main {
+    flex: 1;
+}
+
+/* ===== HEADER COMPACTO ===== */
+header {
+    margin-bottom: 0.25rem;
+}
+
+header .navbar {
+    background: linear-gradient(to right,#505666);
+    padding: 0.2rem 0;
+    min-height: auto;
+}
+
+/* Contenedor del navbar más compacto */
+header .container-fluid {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+header .navbar a,
+header .navbar button {
+    color: white;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Logo más pequeño */
+header .navbar-brand {
+    width: 150px !important;
+    height: 60px !important;
+}
+
+header .navbar-brand img {
+    width: 150px !important;
+    height: 60px !important;
+}
+
+/* Botones más compactos */
+header .btn {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.85rem;
+    line-height: 1.2;
+}
+
+/* Gap más pequeño entre elementos */
+header .gap-2 {
+    gap: 0.3rem;
+}
+
+/* ===== FOOTER COMPACTO ===== */
+footer {
+    background: linear-gradient(to right, #505666);
+    color: #fff;
+    padding: 0.3rem 0;
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    min-height: auto;
+}
+
+/* Contenedor del footer más compacto */
+footer .container {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* Fuerza color blanco en todo lo dentro del footer */
+footer * {
+  color: #fff;
+}
+
+/* Botones dentro del footer (si los hay) */
+footer .btn,
+footer .btn-outline-dark {
+  color: #fff;
+  border-color: rgba(255,255,255,.6);
+  background: transparent;
+}
+
+/* ===== MAIN MÁS ESPACIOSO ===== */
+main.container {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+/*------------------------------------------------------------------*/
+
+/* 🌞 Modo claro (default) */
+body {
+  background: #f8f9fa;
+  color: #212529;
+}
+
+/* 🌙 Modo oscuro */
+body.dark-mode {
+  background: #181a1b;
+  color: #f1f1f1;
+}
+
+/* Navbar en modo oscuro - TAMBIÉN COMPACTO */
+body.dark-mode header .navbar {
+  background: linear-gradient(to right, #232526, #414345);
+  padding: 0.2rem 0;
+}
+
+body.dark-mode header .navbar a,
+body.dark-mode header .navbar button {
+  color: #fff;
+}
+
+/* Footer oscuro - TAMBIÉN COMPACTO */
+body.dark-mode footer {
+  background: linear-gradient(to right, #232526, #414345);
+  color: #fff;
+  padding: 0.3rem 0;
+}
+
+/*cards oscuros*/
+body.dark-mode .custom-card {
+  background: #1f2125;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  color: #e0e0e0;
+}
+body.dark-mode .custom-card .card-text {
+  color: #aaa;
+}
+/*Titulos Blancos en modo oscuro*/
+body.dark-mode .title {
+  color: #fff;
+}
+
+/* Modo oscuro - fuerza colores de texto */
+body.dark-mode .custom-card .card-title {
+  color: #ffffff;  /* títulos bien visibles */
+}
+
+body.dark-mode .custom-card .card-text {
+  color: #cfd2d6;  /* gris claro para descripciones */
+}
+
+/* ===== OFFCANVAS COMPACTO ===== */
+.offcanvas-start {
+    width: 220px !important; /* Ancho reducido del menú lateral */
+}
+
+/* Ajuste responsivo para móviles: usa porcentaje del viewport */
+@media (max-width: 576px) {
+    .offcanvas-start {
+        width: 75vw !important; /* Nunca más de 75% del ancho en pantallas pequeñas */
+    }
+}
+
+/* Ítems del menú un poco más compactos */
+.offcanvas-body ul li a {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+}

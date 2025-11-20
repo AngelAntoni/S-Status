@@ -1,0 +1,210 @@
+/* Tarjeta de detalles */
+.detalles-card { 
+    border: 1px solid #dee2e6; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15); 
+}
+
+/* Impresión */
+@media print {
+    @page { size: A4 portrait; margin: 12mm; }
+    header, footer, .no-print, .offcanvas { display: none !important; }
+    main.container { margin: 0 !important; padding: 0 !important; max-width: 100% !important; }
+    body { background: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card { box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important; border: 1px solid #dee2e6 !important; }
+    .card-body { padding: 0 !important; }
+    .table { width: 100% !important; font-size: 12px; }
+    .table thead th { background: #f0f0f0 !important; }
+    .table-striped > tbody > tr:nth-of-type(odd) { --bs-table-accent-bg: #fafafa; }
+
+    a, a:link, a:visited, a:hover, a:active { color: #007bff !important; text-decoration: underline !important; }
+    .col-md-6 div, .col-md-6 label, .table tbody tr td { color: #000 !important; }
+    .url-container { word-break: break-all !important; max-width: 100% !important; white-space: normal !important; }
+}
+
+/* URL en pantalla */
+.url-container { 
+    word-break: break-all; 
+    max-width: 100%; 
+}
+
+/* Estilos generales */
+.server-name { font-weight: 600; color: inherit; }
+.datetime-info { font-size: 0.9rem; line-height: 1.4; }
+.date, .time { font-weight: 500; }
+.duration { font-weight: 600; color: #0d6efd; }
+.status-badge { 
+    padding: 0.5rem 1rem; 
+    border-radius: 20px; 
+    font-size: 0.8rem; 
+    font-weight: 600; 
+    text-transform: uppercase; 
+}
+.status-error { background: #dc3545; color: white; }
+.status-success { background: #198754; color: white; }
+.resolver { font-weight: 600; color: #198754; }
+
+/* Forzar color negro en modal */
+#infoModal .modal-content,
+#infoModal .modal-body,
+#infoModal .modal-header,
+#infoModal .modal-footer {
+    color: #000 !important;
+}
+
+#infoModal a { 
+    color: #000 !important; 
+    text-decoration: underline; 
+}
+
+
+/* ============================
+   ESTILOS PARA IMPRESIÓN
+   ============================ */
+   @media print {
+
+    /* 🧭 Oculta elementos innecesarios */
+    nav, header, footer, .no-print, .btn, .modal, .modal-backdrop {
+      display: none !important;
+    }
+  
+    /* 📄 Ajustes generales */
+    body {
+      background: white !important;
+      color: black !important;
+      font-family: "Times New Roman", serif;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  
+    /* 📑 Contenedor principal */
+    .container {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+  
+    /* 🧾 Tarjeta de detalles */
+    .detalles-card {
+      border: none !important;
+      box-shadow: none !important;
+      margin: 0;
+      padding: 0;
+    }
+  
+    .detalles-card .card-body {
+      padding: 0;
+    }
+  
+    /* 📋 Tablas */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12pt;
+    }
+  
+    table th, table td {
+      border: 1px solid #000;
+      padding: 6px;
+    }
+  
+    table thead {
+      background-color: #f0f0f0 !important;
+    }
+  
+    /* 🔹 Textos y etiquetas */
+    h3, h5, label {
+      color: #000 !important;
+    }
+  
+    /* 💡 Ajustar links */
+    a {
+      color: black !important;
+      text-decoration: none !important;
+    }
+  
+    /* 🧱 Quita márgenes de impresión del navegador */
+    @page {
+      margin: 1.5cm;
+    }
+  
+    /* ⚙️ Controlar saltos de página si hay muchas filas */
+    tr, td, th {
+      page-break-inside: avoid;
+    }
+  
+    /* 💬 Mostrar solo contenido relevante (no modales ni botones) */
+    .modal {
+      display: none !important;
+    }
+  }
+
+/* Modal moderno */
+.modern-modal {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.08);
+  background: #ffffff;
+  box-shadow: 0 16px 40px rgba(0,0,0,.25);
+  backdrop-filter: blur(12px);
+}
+
+.modern-modal .modal-header {
+  background: linear-gradient(135deg, #2081FF, #7928CA);
+  color: #fff;
+  border-bottom: none;
+  padding: 14px 18px;
+}
+
+.modern-modal .modal-title {
+  font-weight: 700;
+}
+
+.modern-modal .modal-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.modern-modal .modal-body {
+  padding: 18px;
+}
+
+.modern-modal .modern-list .list-group-item {
+  background: transparent;
+  border: none;
+  padding: 12px 0;
+}
+
+.modern-modal .modern-list .list-group-item + .list-group-item {
+  border-top: 1px dashed rgba(0,0,0,.12);
+}
+
+.modern-modal .modal-footer {
+  border-top: none;
+  padding: 14px 18px;
+}
+
+/* Modo oscuro (soporta clase y data-theme) */
+html[data-theme="dark"] .modern-modal,
+body.dark-mode .modern-modal {
+  background: #1f2125;
+  border-color: #2a2d31;
+  box-shadow: 0 16px 40px rgba(0,0,0,.45);
+}
+
+html[data-theme="dark"] .modern-modal .modern-list .list-group-item + .list-group-item,
+body.dark-mode .modern-modal .modern-list .list-group-item + .list-group-item {
+  border-top: 1px dashed rgba(255,255,255,.15);
+}
+
+html[data-theme="dark"] .modern-modal .modal-header,
+body.dark-mode .modern-modal .modal-header {
+  background: linear-gradient(135deg, #1c274b, #3b2a59);
+}
+
+html[data-theme="dark"] .btn-close,
+body.dark-mode .btn-close {
+  filter: invert(1) grayscale(100%);
+}
+
+/* Mantener reglas de impresión existentes */
+  

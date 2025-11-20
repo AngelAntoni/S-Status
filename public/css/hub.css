@@ -1,0 +1,175 @@
+/* Contenedor general */
+.hub-container {
+    min-height: 70vh;
+    padding-bottom: 20px;
+    padding-top: 40px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Título */
+.hub-container .title {
+    font-weight: 700;
+    font-size: 2rem;
+    color: #232526;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Cards personalizadas */
+.custom-card {
+    border: none;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    transition: all 0.3s ease;
+    padding: 20px; 
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    max-width: 180px; 
+    margin: 10px;  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    cursor: pointer;
+}
+
+.custom-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* Ajustar Tamaños de iconos */
+.custom-card .icon {
+    font-size: 2rem;  
+    color: #2081FF;
+    margin-bottom: 12px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+.custom-card:hover .icon {
+    color: #006EFF;
+    transform: scale(1.15);
+}
+
+/* Ajustar titulos de card */
+.custom-card .card-title {
+    font-size: 1rem;  
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+/* Ajustar textos de card */
+.custom-card .card-text {
+    font-size: 0.8rem;  
+    color: #6c757d;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Alineación horizontal de las cards */
+.row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;  
+    align-items: flex-start;
+}
+
+/* Modificación de columnas */
+.col-md-3, .col-sm-4 {
+    flex: 0 1 400px; 
+    max-width: 400px;  
+}
+
+/* Estilo para la fila en pantallas grandes */
+@media (min-width: 768px) {
+    .row {
+        flex-wrap: nowrap; 
+    }
+}
+
+
+main.container {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.hub-container {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 6px;
+    padding-bottom: 0;
+    height: auto;
+    min-height: calc(100vh - 96px);
+}
+
+@media (max-width: 768px) {
+    .hub-container {
+        height: auto;
+        min-height: calc(100vh - 88px);
+        padding-top: 6px;
+        padding-bottom: 0;
+    }
+}
+
+.hub-container .title { margin-bottom: 10px; }
+
+
+.hub-cards { margin-top: 24px; }
+@media (max-width: 768px) {
+    .hub-cards { margin-top: 24px; }
+}
+
+
+body.hub-alt-flex {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+body.hub-alt-flex main.container {
+    flex: 1 0 auto;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+body.hub-alt-flex footer { margin-top: 0 !important; }
+
+body.hub-alt-noscroll { overflow: hidden; }
+body.hub-alt-noscroll main.container {
+    height: calc(100vh - 96px);
+    overflow: hidden; 
+    margin-top: 0 !important;  
+    margin-bottom: 0 !important;
+}
+
+
+body.hub-alt-noscroll .hub-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    padding-top: 120px; 
+    padding-bottom: 0;
+}
+
+body.hub-alt-noscroll .hub-container .title { margin-bottom: 20px; }
+
+body.hub-alt-noscroll .hub-container .row { margin-top: 0; margin-bottom: 0; }
+
+body.hub-alt-footer-fixed footer {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    width: 100%;
+    z-index: 1030;
+}
+body.hub-alt-footer-fixed main.container { padding-bottom: 60px !important; }

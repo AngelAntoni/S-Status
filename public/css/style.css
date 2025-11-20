@@ -1,0 +1,90 @@
+/* Reset y control de overscroll*/
+html, body {
+    height: 100%;
+    margin: 0;
+    overscroll-behavior-y: none; 
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden; 
+}
+
+main {
+    flex: 1;
+}
+
+/* HEADER MÁS COMPACTO */
+header {
+    margin-bottom: 0.5rem !important; /* Reducido de mb-3 a 0.5rem */
+}
+
+header .navbar {
+    background: linear-gradient(to right, #505666) !important;
+    padding: 0.25rem 0 !important; /* Reducido significativamente el padding vertical */
+}
+
+header .navbar a,
+header .navbar button {
+    color: white !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Logo más pequeño */
+header .navbar-brand img {
+    width: 150px !important;
+    height: 60px !important;
+}
+
+/* Botones más compactos */
+header .btn {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.875rem !important;
+}
+
+/* FOOTER MÁS COMPACTO */
+footer {
+    background: linear-gradient(to right, #505666) !important;
+    color: white;
+    padding: 0.3rem 0 !important; /* Padding muy reducido */
+    margin-top: 0.25rem !important; /* Margin muy reducido */
+    font-size: 0.8rem !important; /* Texto más pequeño */
+    min-height: auto !important; /* Anular min-height */
+}
+
+footer .container {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+footer .py-2 {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* MAIN con menos padding */
+main.container {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+}
+
+
+/* Reducir ancho del sidebar */
+.offcanvas-start {
+    width: 200px !important; /* Forzar ancho compacto por encima de Bootstrap */
+}
+
+/* Responsivo: no ocupar demasiado en móviles */
+@media (max-width: 576px) {
+    .offcanvas-start {
+        width: 75vw !important;
+    }
+}
+
+/* Opcional: centrar mejor los íconos y textos del menú */
+.offcanvas-body ul li a {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+}
