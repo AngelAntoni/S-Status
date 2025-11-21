@@ -1,140 +1,169 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+// Añadir servidor desde el modal
+const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
-  // Editar servidor
-  document.querySelectorAll('.btn-editar-url').forEach(btn => {
-    btn.addEventListener('click', async function () {
-      const row = this.closest('tr');
-      const nombre = row?.querySelector('td:nth-child(1)')?.textContent.trim() || '';
-      const tipo = row?.querySelector('td:nth-child(2)')?.textContent.trim() || '';
-      const urlActual = this.dataset.url || row?.querySelector('td:nth-child(3)')?.textContent.trim() || '';
+document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('#btnAñadir');
+    if (!btn) return;
 
-      if (!urlActual) return;
+    const name = document.getElementById('nombreServidor')?.value.trim() || '';
+    const url = document.getElementById('urlServidor')?.value.trim() || '';
+    const typeRaw = document.getElementById('tipoServidor')?.value.trim() || '';
+    const type = (typeRaw || '').toLowerCase();
+    const description = document.getElementById('descripcionServidor')?.value.trim() || '';
 
-      const result = await Swal.fire({
-        title: 'Editar servidor',
-        width: '36rem',
-        html: `
-          <div class="mb-3">
-            <label for="swal-name" class="form-label">Nombre</label>
-            <input id="swal-name" type="text" class="form-control" value="${nombre}">
-          </div>
-          <div class="mb-3">
-            <label for="swal-type" class="form-label">Tipo</label>
-            <input id="swal-type" type="text" class="form-control" value="${tipo}">
-          </div>
-          <div class="mb-3">
-            <label for="swal-url" class="form-label">Nueva URL (opcional)</label>
-            <input id="swal-url" type="url" class="form-control" placeholder="https://ejemplo.com/" value="${urlActual}">
-          </div>
-        `,
-        focusConfirm: false,
-        showCancelButton: true,
-        confirmButtonText: 'Guardar',
-        cancelButtonText: 'Cancelar',
-        buttonsStyling: false,
-        customClass: {
-          confirmButton: 'btn btn-primary me-2',
-          cancelButton: 'btn btn-secondary'
+    if (!name || !url || !type) {
+      if (window.Swal) Swal.fire('Campos incompletos', 'Nombre, URL y Tipo son obligatorios', 'warning');
+      return;
+    }
+
+    if (!/^https?:\/\//i.test(url)) {
+      if (window.Swal) Swal.fire('URL inválida', 'La URL debe comenzar con http:// o https://', 'error');
+      return;
+    }
+
+    const payload = { name, url, type, description, _token: csrf };
+
+    try {
+      const resp = await fetch('/add-server', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRF-TOKEN': csrf
         },
-        didOpen: () => {
-          const el = document.getElementById('swal-name');
-          if (el) el.focus();
-        },
-        preConfirm: () => {
-          const name = document.getElementById('swal-name').value.trim();
-          const type = document.getElementById('swal-type').value.trim();
-          const new_url = document.getElementById('swal-url').value.trim();
-          if (!name) {
-            Swal.showValidationMessage('El nombre es obligatorio');
-            return false;
-          }
-          if (new_url && !/^https?:\/\//i.test(new_url)) {
-            Swal.showValidationMessage('La URL debe empezar con http:// o https://');
-            return false;
-          }
-          return { name, type, new_url };
-        }
+        body: JSON.stringify(payload)
       });
 
-      if (!result.isConfirmed) return;
+      const ct = resp.headers.get('content-type') || '';
+      const data = ct.includes('application/json') ? await resp.json() : null;
 
-      const payload = { url: urlActual, ...result.value };
-
-      try {
-        const resp = await fetch('/servidores', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRF-TOKEN': csrf
-          },
-          body: JSON.stringify(payload)
-        });
-
-        const ct = resp.headers.get('content-type') || '';
-        const data = ct.includes('application/json') ? await resp.json() : { ok: false, error: `HTTP ${resp.status}` };
-
-        if (resp.ok && data?.ok) {
-          await Swal.fire('Listo', 'Servidor actualizado correctamente', 'success');
-          window.location.reload();
-        } else {
-          Swal.fire('Error', data?.error || `Error ${resp.status}`, 'error');
-        }
-      } catch (e) {
-        Swal.fire('Error', e?.message || 'Ocurrió un error al editar', 'error');
+      if (resp.ok && data?.ok) {
+        if (window.Swal) await Swal.fire('Éxito', 'Servidor agregado correctamente', 'success');
+        window.location.reload();
+      } else {
+        if (window.Swal) Swal.fire('Error', (data && data.error) ? data.error : `Error ${resp.status}`, 'error');
       }
-    });
+    } catch (e) {
+      if (window.Swal) Swal.fire('Error', e?.message || 'Ocurrió un error al guardar', 'error');
+    }
   });
 
-  // Eliminar URL
-  document.querySelectorAll('.btn-eliminar-url').forEach(btn => {
-    btn.addEventListener('click', async function () {
-      const url = this.dataset.url;
-      if (!url) return;
+  document.addEventListener('click', async (e) => {
+    const delBtn = e.target.closest('.btn-eliminar-url');
+    if (!delBtn) return;
 
-      const confirmResult = await Swal.fire({
-        title: 'Eliminar URL',
-        text: `¿Deseas eliminar este enlace?\n${url}`,
+    const url = delBtn.dataset.url || '';
+    if (!url) return;
+
+    try {
+      const ok = await (window.Swal ? Swal.fire({
         icon: 'warning',
+        title: 'Eliminar servidor',
+        text: '¿Seguro que deseas eliminar este servidor y sus reportes?',
         showCancelButton: true,
         confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'Cancelar'
+      }).then(r => r.isConfirmed) : Promise.resolve(confirm('¿Eliminar servidor?')));
+
+      if (!ok) return;
+
+      const resp = await fetch('/servidores', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRF-TOKEN': csrf
+        },
+        body: JSON.stringify({ url })
       });
+      const data = await resp.json().catch(() => null);
 
-      if (!confirmResult.isConfirmed) return;
-
-      try {
-        const resp = await fetch('/servidores', {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRF-TOKEN': csrf
-          },
-          body: JSON.stringify({ url })
-        });
-
-        let data = null;
-        const ct = resp.headers.get('content-type') || '';
-        if (ct.includes('application/json')) {
-          data = await resp.json();
-        } else {
-          const text = await resp.text();
-          throw new Error(`HTTP ${resp.status} - Respuesta no JSON: ${text.slice(0, 160)}`);
-        }
-
-        if (resp.ok && data?.ok) {
-          await Swal.fire('Eliminado', 'URL eliminada correctamente', 'success');
-          window.location.reload();
-        } else {
-          Swal.fire('Error', data?.error || `Error ${resp.status}`, 'error');
-        }
-      } catch (e) {
-        Swal.fire('Error', e?.message || 'Ocurrió un error al eliminar', 'error');
+      if (resp.ok && data && data.ok) {
+        const tr = delBtn.closest('tr');
+        if (tr) tr.remove();
+        if (window.Swal) Swal.fire('Eliminado', 'Servidor eliminado', 'success');
+      } else {
+        if (window.Swal) Swal.fire('Error', (data && data.error) ? data.error : `Error ${resp.status}`, 'error');
       }
-    });
+    } catch (err) {
+      if (window.Swal) Swal.fire('Error', err?.message || 'Ocurrió un error al eliminar', 'error');
+    }
+  });
+
+  document.addEventListener('click', async (e) => {
+    const editBtn = e.target.closest('.btn-editar-url');
+    if (!editBtn) return;
+
+    const row = editBtn.closest('tr');
+    const currentName = row?.querySelector('td:nth-child(1)')?.textContent?.trim() || '';
+    const currentType = row?.querySelector('td:nth-child(2)')?.textContent?.trim().toLowerCase() || '';
+    const currentUrl = editBtn.dataset.url || row?.querySelector('td:nth-child(3)')?.textContent?.trim() || '';
+
+    const html = `
+      <div class="mb-2">
+        <label class="form-label">Nombre</label>
+        <input id="swal-name" class="form-control" type="text" value="${currentName}">
+      </div>
+      <div class="mb-2">
+        <label class="form-label">Tipo</label>
+        <select id="swal-type" class="form-select">
+          <option value="web" ${currentType==='web'?'selected':''}>WEB</option>
+          <option value="api" ${currentType==='api'?'selected':''}>API</option>
+          <option value="ftp" ${currentType==='ftp'?'selected':''}>FTP</option>
+          <option value="bd" ${currentType==='bd'?'selected':''}>Base de Datos</option>
+        </select>
+      </div>
+      <div class="mb-2">
+        <label class="form-label">Nueva URL</label>
+        <input id="swal-url" class="form-control" type="url" value="${currentUrl}">
+      </div>
+    `;
+
+    const res = await (window.Swal ? Swal.fire({
+      title: 'Editar servidor',
+      html,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Guardar',
+      cancelButtonText: 'Cancelar',
+      preConfirm: () => {
+        return {
+          name: document.getElementById('swal-name')?.value?.trim() || '',
+          type: (document.getElementById('swal-type')?.value?.trim() || '').toLowerCase(),
+          new_url: document.getElementById('swal-url')?.value?.trim() || ''
+        };
+      }
+    }) : Promise.resolve({ isConfirmed: true, value: { name: currentName, type: currentType, new_url: currentUrl } }));
+
+    if (!res.isConfirmed) return;
+    const payload = { url: currentUrl };
+    if (res.value.name) payload.name = res.value.name;
+    if (res.value.type) payload.type = res.value.type;
+    if (res.value.new_url && res.value.new_url !== currentUrl) payload.new_url = res.value.new_url;
+
+    try {
+      const resp = await fetch('/servidores', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRF-TOKEN': csrf
+        },
+        body: JSON.stringify(payload)
+      });
+      const data = await resp.json().catch(() => null);
+      if (resp.ok && data && data.ok) {
+        if (window.Swal) await Swal.fire('Guardado', 'Servidor actualizado', 'success');
+        window.location.reload();
+      } else {
+        if (window.Swal) Swal.fire('Error', (data && data.error) ? data.error : `Error ${resp.status}`, 'error');
+      }
+    } catch (err) {
+      if (window.Swal) Swal.fire('Error', err?.message || 'Ocurrió un error al editar', 'error');
+    }
   });
 });

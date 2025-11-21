@@ -29,15 +29,22 @@ Route::get('/añadir_serv', function () {
 Route::get('/servidor/{id}/detalles', [ServerController::class, 'detalles'])->name('servidor.detalles');
 
 Route::post('/add-server', function (Request $request) {
+    $validated = $request->validate([
+        'name' => 'required|string',
+        'url' => 'required|url',
+        'type' => 'required|string|in:web,api,ftp,bd',
+        'description' => 'nullable|string'
+    ]);
+
     $server = new Server();
-    $server->name = $request->name;
-    $server->url = $request->url;
-    $server->type = $request->type;
-    $server->description = $request->description;
+    $server->name = $validated['name'];
+    $server->url = $validated['url'];
+    $server->type = strtolower($validated['type']);
+    $server->description = $validated['description'] ?? null;
     $server->is_active = true;
     $server->save();
-    
-    return response()->json(['success' => true]);
+
+    return response()->json(['ok' => true]);
 });
 
 

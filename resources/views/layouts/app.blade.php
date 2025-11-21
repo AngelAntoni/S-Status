@@ -5,7 +5,7 @@
     <!-- CSS personalizados -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/servidor.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/dark.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dark.css') }}?v={{ filemtime(public_path('css/dark.css')) }}">
 
 
 

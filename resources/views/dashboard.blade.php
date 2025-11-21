@@ -12,9 +12,10 @@
         <div class="d-flex align-items-center">
             <div class="dataTables_filter_container me-3"></div>
 
-            <a href="/añadir_serv" class="btn btn-primary d-flex align-items-center">
+            <button class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#modalAgregarServidor">
                 <i class="bi bi-plus-lg"></i>
-            </a>
+            </button>
+
 
             <button id="btnEnviarAlertas" class="btn btn-outline-primary ms-2" title="Enviar alertas de páginas caídas">
                 <i class="bi bi-check2-circle"></i>
@@ -63,6 +64,56 @@
             @endforeach
         </tbody>
     </table>
+    <!-- Modal: Añadir Servidor -->
+<div class="modal fade" id="modalAgregarServidor" tabindex="-1" aria-labelledby="modalAgregarServidorLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow">
+
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="modalAgregarServidorLabel">Añadir Servidor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="formAgregarServidor">
+                    @csrf
+
+                    <div class="mb-3">
+                        <label class="form-label">Nombre del Servidor</label>
+                        <input type="text" class="form-control" id="nombreServidor" placeholder="Servidor Web Principal">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">URL del Servidor</label>
+                        <input type="url" class="form-control" id="urlServidor" placeholder="https://example.com">
+                        <div class="form-text">Ingrese una URL válida (ejemplo: https://example.com)</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Tipo de Servidor</label>
+                        <select class="form-select" id="tipoServidor">
+                            <option value="web">WEB</option>
+                            <option value="bd">Base de Datos</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcionServidor" rows="3" placeholder="Descripción del servidor"></textarea>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnAñadir" class="btn btn-success">Añadir</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
     <div class="d-flex justify-content-between align-items-center mt-3">
         <div class="pagination-info small">
@@ -81,6 +132,6 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-<script src="{{ asset('js/servers.js') }}"></script>
+<script src="{{ asset('js/servers.js') }}?v={{ filemtime(public_path('js/servers.js')) }}"></script>
 
 @endsection
