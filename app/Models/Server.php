@@ -38,4 +38,9 @@ class Server extends Model
     {
         return $this->hasOne(ServerStatus::class)->latest('checked_at');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

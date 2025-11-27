@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Server;
 use App\Models\Report;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
@@ -19,7 +20,8 @@ class ReportController extends Controller
 
         // Buscar servidor por URL (tolerante con la barra final)
         $urlInput = rtrim($validated['url'], '/');
-        $server = Server::where('url', $validated['url'])
+        $server = Server::where('user_id', Auth::id())
+            ->where('url', $validated['url'])
             ->orWhere('url', $urlInput)
             ->orWhere('url', $urlInput . '/')
             ->first();

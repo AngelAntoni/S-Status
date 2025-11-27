@@ -66,6 +66,16 @@
           <i class="bi bi-list"></i>
         </button>
       </div>
+      @auth
+      <div class="d-flex align-items-center">
+        <form method="POST" action="{{ route('logout') }}" class="mb-0">
+          @csrf
+          <button type="submit" class="btn btn-outline-light" title="Cerrar sesión">
+            <i class="bi bi-box-arrow-right"></i>
+          </button>
+        </form>
+      </div>
+      @endauth
     </div>
   </nav>
 </header>

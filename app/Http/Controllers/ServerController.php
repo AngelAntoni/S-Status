@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Server;
 use App\Models\Report;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ServerController extends Controller
 {
@@ -15,6 +16,7 @@ class ServerController extends Controller
 
         // Buscar el servidor por tipo y URL
         $servidor = Server::where('type', $tipo)
+            ->where('user_id', Auth::id())
             ->where('url', $url)
             ->firstOrFail();
 
@@ -49,7 +51,8 @@ class ServerController extends Controller
 
         $input = rtrim($validated['url'], '/');
 
-        $server = Server::where('url', $validated['url'])
+        $server = Server::where('user_id', Auth::id())
+            ->where('url', $validated['url'])
             ->orWhere('url', $input)
             ->orWhere('url', $input . '/')
             ->first();
@@ -77,7 +80,8 @@ class ServerController extends Controller
 
         $input = rtrim($validated['url'], '/');
 
-        $server = Server::where('url', $validated['url'])
+        $server = Server::where('user_id', Auth::id())
+            ->where('url', $validated['url'])
             ->orWhere('url', $input)
             ->orWhere('url', $input . '/')
             ->first();

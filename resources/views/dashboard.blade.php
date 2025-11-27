@@ -20,6 +20,7 @@
             <button id="btnEnviarAlertas" class="btn btn-outline-primary ms-2" title="Enviar alertas de páginas caídas">
                 <i class="bi bi-check2-circle"></i>
             </button>
+
         </div>
     </div>
 
